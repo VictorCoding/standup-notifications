@@ -1,63 +1,70 @@
-let timeout;
-let dismissed = false;
-
+let timeout
+let clicked = false
 
 const init = () => {
-    const timerInput = document.getElementById('intervalTime');
-    const timerTime = localStorage.getItem('intervalTime');
-    timerInput.value = timerTime ? parseInt(timerTime, 10) : 2000;
+  const timerInput = document.getElementById('intervalTime')
+  const timerTime = localStorage.getItem('intervalTime')
+  timerInput.value = timerTime ? parseInt(timerTime, 10) : 2000
 }
 
 const saveIntervalTime = (updated) => {
-    const time = document.getElementById('intervalTime').value;
-    localStorage.setItem('intervalTime', time);
+  const time = document.getElementById('intervalTime').value
+  localStorage.setItem('intervalTime', time)
 
-    clearTimeout(timeout);
-    runTimer();
-}
-
-const keepBuggingUntilManualDismiss = () => {
-    const timer = setInterval(() => {
-        showNotification(false);
-
-    console.log('dismissed', dismissed)
-        if (dismissed) {
-            clearInterval(timer);
-        }
-    }, 4000);
+  clearTimeout(timeout)
+  runTimer()
 }
 
 const runTimer = () => {
-    dismissed = false;
-    // time should be in minutes therefore we need to convert to milliseconds
-    // by multiplying by 60000
-    // const timer = parseInt(localStorage.getItem('intervalTime'), 10) * 60000;
-    const timer = parseInt(localStorage.getItem('intervalTime'), 10);
+  // time should be in minutes therefore we need to convert to milliseconds
+  // by multiplying by 60000
+  const timer = parseInt(localStorage.getItem('intervalTime'), 10) * 60000
 
-    timeout = setTimeout(() => {
-        showNotification(true);
-        // keepBuggingUntilManualDismiss();
-    }, timer);
+  timeout = setTimeout(() => {
+      showNotification()
+  }, timer)
 }
 
-const showNotification = (sound) => {
-    const notification = new Notification('Title', {
-        body: 'Stand up!',
-        sound,
-    });
-    notification.onclick = (e) => {
-        console.log('clicked', e)
-        e.preventDefault();
-        dismissed = true;
-        runTimer();
+const showNotification = () => {
+  clicked = false;
+
+  if (Notification.permission === 'granted') {
+    _setupNotification()
+  } else if (Notification.permission !== 'denied') {
+    Notification.requestPermission((permission) => {
+      if (permission === 'granted') {
+        _setupNotification()
+      }
+    })
+  }
+}
+
+const _setupNotification = () => {
+  new Audio('assets/coins.mp3').play()
+  const notification = new Notification('Arriva!', {
+    body: 'Mueve las nachas',
+    requireInteraction: true,
+  })
+
+  notification.onclose = () => {
+    console.log('on close')
+    if (!clicked) {
+      runTimer()
     }
+  }
+
+  notification.onclick = () => {
+    clicked = true;
+    notification.close()
+    runTimer()
+  }
 }
 
 window.onload = function() {
-    Object.assign(window, {
-        saveIntervalTime,
-    })
+  Object.assign(window, {
+    saveIntervalTime,
+  })
 
-    init();
-    runTimer();
+  init()
+  runTimer()
 }
