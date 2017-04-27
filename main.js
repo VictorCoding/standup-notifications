@@ -4,7 +4,7 @@ let clicked = false
 const init = () => {
   const timerInput = document.getElementById('intervalTime')
   const timerTime = localStorage.getItem('intervalTime')
-  timerInput.value = timerTime ? parseInt(timerTime, 10) : 2000
+  timerInput.value = timerTime ? parseInt(timerTime, 10) : 20
 }
 
 const saveIntervalTime = (updated) => {
