@@ -4,7 +4,12 @@ let clicked = false
 const init = () => {
   const timerInput = document.getElementById('intervalTime')
   const timerTime = localStorage.getItem('intervalTime')
-  timerInput.value = timerTime ? parseInt(timerTime, 10) : 20
+  
+  if (!timerTime) {
+    localStorage.setItem('intervalTime', 20)
+    timerInput.value = timerTime ? parseInt(timerTime, 10) : 20
+  }
+  
 }
 
 const saveIntervalTime = (updated) => {
@@ -47,7 +52,6 @@ const _setupNotification = () => {
   })
 
   notification.onclose = () => {
-    console.log('on close')
     if (!clicked) {
       runTimer()
     }
