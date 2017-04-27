@@ -4,12 +4,12 @@ let clicked = false
 const init = () => {
   const timerInput = document.getElementById('intervalTime')
   const timerTime = localStorage.getItem('intervalTime')
-  
-  if (!timerTime) {
-    localStorage.setItem('intervalTime', 20)
-    timerInput.value = timerTime ? parseInt(timerTime, 10) : 20
+  localStorage.setItem('intervalTime', timerTime ? timerTime : 20)
+  timerInput.value = timerTime ? parseInt(timerTime, 10) : 20
+
+  if (Notification.permission !== 'granted') {
+    Notification.requestPermission(()=> {})
   }
-  
 }
 
 const saveIntervalTime = (updated) => {
@@ -26,7 +26,7 @@ const runTimer = () => {
   const timer = parseInt(localStorage.getItem('intervalTime'), 10) * 60000
 
   timeout = setTimeout(() => {
-      showNotification()
+    showNotification()
   }, timer)
 }
 
