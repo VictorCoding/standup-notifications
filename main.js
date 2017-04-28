@@ -1,5 +1,4 @@
 let timeout
-let clicked = false
 
 const init = () => {
   const timerInput = document.getElementById('intervalTime')
@@ -31,8 +30,6 @@ const runTimer = () => {
 }
 
 const showNotification = () => {
-  clicked = false;
-
   if (Notification.permission === 'granted') {
     _setupNotification()
   } else if (Notification.permission !== 'denied') {
@@ -51,14 +48,8 @@ const _setupNotification = () => {
     requireInteraction: true,
   })
 
-  notification.onclose = () => {
-    if (!clicked) {
-      runTimer()
-    }
-  }
 
   notification.onclick = () => {
-    clicked = true;
     notification.close()
     runTimer()
   }
