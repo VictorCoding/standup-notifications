@@ -47,7 +47,7 @@ const showNotification = () => {
 const _setupNotification = () => {
   new Audio('assets/coins.mp3').play()
   const notification = new Notification('Arriva!', {
-    body: 'Mueve las nachas',
+    body: 'Move a lil!',
     requireInteraction: true,
   })
 
