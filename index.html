@@ -28,6 +28,28 @@
         display: flex;
         justify-content: center;
       }
+      .main-container .settings-container .checkmark {
+        margin-left: -63px;
+        display: none;
+        position: absolute;
+        margin-top: 4px;
+      }
+      .main-container .settings-container .checkmark:after{
+         /*Add another block-level blank space*/
+         content: '';
+         display: block;
+
+         /*Make it a small rectangle so the border will create an L-shape*/
+         width: 6px;
+         height: 9px;
+
+         /*Add a white border on the bottom and left, creating that 'L' */
+         border: solid #75ff50;
+         border-width: 0 2px 2px 0;
+
+         /*Rotate the L 45 degrees to turn it into a checkmark*/
+         transform: rotate(45deg);
+       }
       .main-container .settings-container .interval-time {
         width: 50px;
         height: 20px;
@@ -52,7 +74,7 @@
     </style>
   </head>
   <body>
-    <form onsubmit="saveIntervalTime()">
+    <form onsubmit="saveIntervalTime(event)">
       <div class="main-container">
         <div class="title">
           <h4>Stand up notifications</h4>
@@ -63,6 +85,7 @@
                  min="1"
                  class="interval-time">
           <button>Save</button>
+          <div id="checkmark" class="checkmark"></div>
         </div>
         <div class="notes-container">
           <span>- Time is in minutes -</span>

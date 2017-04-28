@@ -1,4 +1,5 @@
 let timeout
+let checkmarkToggleTimeout
 
 const init = () => {
   const timerInput = document.getElementById('intervalTime')
@@ -11,12 +12,13 @@ const init = () => {
   }
 }
 
-const saveIntervalTime = (updated) => {
+function saveIntervalTime(e) {
+  e.preventDefault()
   const time = document.getElementById('intervalTime').value
   localStorage.setItem('intervalTime', time)
-
   clearTimeout(timeout)
   runTimer()
+  _showCheckmark()
 }
 
 const runTimer = () => {
@@ -60,6 +62,14 @@ const testNotification = () => {
   new Notification('Arriva!', {
     body: 'Move a lil!',
   })
+}
+
+const _showCheckmark = () => {
+  const checkmarkEl = document.getElementById('checkmark')
+  checkmarkEl.style.display = 'inline-block'
+  setTimeout(() => {
+    checkmarkEl.style.display = 'none';
+  }, 1000)
 }
 
 window.onload = function() {
