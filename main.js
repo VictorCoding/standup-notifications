@@ -64,9 +64,17 @@ const _setupNotification = () => {
   }
 }
 
+const testNotification = () => {
+  new Audio('assets/coins.mp3').play()
+  new Notification('Arriva!', {
+    body: 'Mueve las nachas',
+  })
+}
+
 window.onload = function() {
   Object.assign(window, {
     saveIntervalTime,
+    testNotification,
   })
 
   init()

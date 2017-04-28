@@ -4,20 +4,70 @@
     <meta charset="UTF-8">
     <title>Arriba!</title>
     <style>
-      .interval-time {
+      body {
+        background: #bfbfde;
+      }
+      .main-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        font-family: Georgia;
+      }
+      .main-container button {
+        cursor: pointer;
+        height: 25px;
+        background: white;
+        border: 1px solid black;
+        border-radius: 3px;
+      }
+      .main-container .title {
+        display: flex;
+        justify-content: center;
+      }
+      .main-container .settings-container {
+        display: flex;
+        justify-content: center;
+      }
+      .main-container .settings-container .interval-time {
         width: 50px;
+        height: 20px;
+        border-radius: 3px;
+        border: 1px solid black;
+        text-align: center;
+      }
+      .main-container .settings-container button {
+        margin-left: 3px;
+      }
+      .main-container .notes-container {
+        display: flex;
+        justify-content: center;
+        font-size: 14px;
+        margin-top: 10px;
+      }
+      .main-container .test-container {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
       }
     </style>
   </head>
   <body>
     <div class="main-container">
-      <h4>Stand up notifications</h4>
-    </div>
-    <div class="settings-container">
-      <input id="intervalTime"
-             type="number"
-             class="interval-time">
-      <button onclick="saveIntervalTime()">Save</button>
+      <div class="title">
+        <h4>Stand up notifications</h4>
+      </div>
+      <div class="settings-container">
+        <input id="intervalTime"
+               type="number"
+               class="interval-time">
+        <button onclick="saveIntervalTime()">Save</button>
+      </div>
+      <div class="notes-container">
+        <span>- Time is in minutes -</span>
+      </div>
+      <div class="test-container">
+        <button onclick="testNotification()">Test</button>
+      </div>
     </div>
   </body>
 
