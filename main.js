@@ -53,7 +53,7 @@ const showNotification = () => {
 
 const _setupNotification = () => {
   new Audio('assets/coins.mp3').play()
-  const notification = new Notification('Arriva!', {
+  const notification = new Notification('Arriba!', {
     body: 'Move a lil!',
     requireInteraction: true,
   })
@@ -68,7 +68,7 @@ const _setupNotification = () => {
 
 const testNotification = () => {
   new Audio('assets/coins.mp3').play()
-  new Notification('Arriva!', {
+  new Notification('Arriba!', {
     body: 'Move a lil!',
   })
 }
@@ -92,10 +92,10 @@ const runTimeChecker = () => {
                      .map(t => t - timestamp) // get the time lapsed
                      .map(t => t / 60000) // convert mills to mins
                      .map(t => intervalTime - t) // get time left till next notification
-                     .fold(t => Math.round(t).toString())
+                     .map(Math.round)
+                     .fold(t => t.toString())
 
     document.getElementById('timeDisplay').innerHTML = `Time left: ${timeLeft} min(s)`
-    console.log('in ehre', timeLeft)
   }, 60000 * 5) // check every 5 minutes
 }
 
