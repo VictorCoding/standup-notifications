@@ -35,6 +35,7 @@ const runTimer = () => {
   runTimeChecker()
 
   timeout = setTimeout(() => {
+    clearInterval(timeDisplayInterval)
     showNotification()
   }, timer)
 }
