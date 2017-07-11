@@ -1,0 +1,23 @@
+{
+  "name": "standup-notifications",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/VictorCoding/standup-notifications.git"
+  },
+  "author": "Victor Ramos",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/VictorCoding/standup-notifications/issues"
+  },
+  "homepage": "https://github.com/VictorCoding/standup-notifications#readme",
+  "devDependencies": {
+    "ts-loader": "^2.2.2",
+    "typescript": "^2.4.1"
+  }
+}
