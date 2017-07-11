@@ -6,6 +6,12 @@ let timeDisplayInterval: number;
 
 declare const Notification: Notification;
 
+/*
+ * @description Setup timer value for input if any has been previously saved in
+ *              the localStorage, if not then set the default to 20 mins. Also
+ *              ask for notifications permission in case it's the first time using
+ *              the app or if permission has been previously removed
+ */
 const init = () => {
   const timerInput = document.getElementById('intervalTime') as HTMLInputElement
   const timerTime = localStorage.getItem('intervalTime')
@@ -19,16 +25,28 @@ const init = () => {
   document.getElementById('timeDisplay').innerHTML = `Time left: ${localStorage.getItem('intervalTime')} min(s)`
 }
 
+/*
+ * @description Save the timer time in the localStorage and rerun the timer.
+ *              If there was a previous timer setup, we clear it. Also update
+ *              the text displaying the time left.
+ * @param {object} e - Form submit event which we prevent from submitting the form.
+ *                     We use this instead of a button with type of button so that we
+ *                     can validate that the timer number is not less than 0.
+ */
 const saveIntervalTime = (e) => {
   e.preventDefault()
-  const time = document.getElementById('intervalTime').value
-  localStorage.setItem('intervalTime', time)
+  const time = document.getElementById('intervalTime') as HTMLInputElement
+  localStorage.setItem('intervalTime', time.value)
   clearTimeout(timeout)
   document.getElementById('timeDisplay').innerHTML = `Time left: ${localStorage.getItem('intervalTime')} min(s)`
   runTimer()
   _showCheckmark()
 }
 
+/*
+ * @description Setup a timeout to display a desktop Notification depending
+ *              the time we pick on the number picker
+ */
 const runTimer = () => {
   // time should be in minutes therefore we need to convert to milliseconds
   // by multiplying by 60000
@@ -43,6 +61,11 @@ const runTimer = () => {
   }, timer)
 }
 
+/*
+ * @description Check if Notification permission has been granted or denied. If granted
+ *              go ahead run utility function that shows notification, if denied then
+ *              ask for permission.
+ */
 const showNotification = () => {
   if (Notification.permission === 'granted') {
     _setupNotification()
@@ -55,6 +78,11 @@ const showNotification = () => {
   }
 }
 
+/*
+ * @description Show desktop Notification and play Audio. Setup onclick handler
+ *              for Notification which gets triggered when the Notification toaster
+ *              gets closed which then setups a new timer for next notification.
+ */
 const _setupNotification = () => {
   new Audio('assets/coins.mp3').play()
 
@@ -71,6 +99,10 @@ const _setupNotification = () => {
   }
 }
 
+/*
+ * @description Shows a Notification and plays an Audio to make sure
+ *              desktop notifications are working
+ */
 const testNotification = () => {
     new Audio('assets/coins.mp3').play()
     new Notification('Arriba!', {
@@ -78,6 +110,9 @@ const testNotification = () => {
     })
 }
 
+/*
+ * @description Utility function to toggle a checkmark when saving a timer
+ */
 const _showCheckmark = () => {
   const checkmarkEl = document.getElementById('checkmark')
   checkmarkEl.style.display = 'inline-block'
@@ -86,6 +121,10 @@ const _showCheckmark = () => {
   }, 1000)
 }
 
+/*
+ * @description Sets up an interval to run every 5 mins to update the time left
+ *              being displayed.
+ */
 const runTimeChecker = () => {
   const timeBox = (time) => ({
     map: f => timeBox(f(time)),
