@@ -1,7 +1,10 @@
 import { INotificationOptions } from './interfaces';
 
-declare const Notification: Notification;
 let timeout: number;
+let timestamp: number;
+let timeDisplayInterval: number;
+
+declare const Notification: Notification;
 
 const init = () => {
   const timerInput = document.getElementById('intervalTime') as HTMLInputElement
@@ -12,6 +15,8 @@ const init = () => {
   if (Notification.permission !== 'granted') {
     Notification.requestPermission(() => {})
   }
+
+  document.getElementById('timeDisplay').innerHTML = `Time left: ${localStorage.getItem('intervalTime')} min(s)`
 }
 
 const saveIntervalTime = (e) => {
@@ -19,6 +24,7 @@ const saveIntervalTime = (e) => {
   const time = document.getElementById('intervalTime').value
   localStorage.setItem('intervalTime', time)
   clearTimeout(timeout)
+  document.getElementById('timeDisplay').innerHTML = `Time left: ${localStorage.getItem('intervalTime')} min(s)`
   runTimer()
   _showCheckmark()
 }
@@ -27,7 +33,12 @@ const runTimer = () => {
   // time should be in minutes therefore we need to convert to milliseconds
   // by multiplying by 60000
   const timer = parseInt(localStorage.getItem('intervalTime'), 10) * 60000
+  timestamp = new Date().getTime()
+  clearInterval(timeDisplayInterval)
+  runTimeChecker()
+
   timeout = setTimeout(() => {
+    clearInterval(timeDisplayInterval)
     showNotification()
   }, timer)
 }
@@ -54,6 +65,7 @@ const _setupNotification = () => {
 
   const notification = new Notification('Arriva!', options)
   notification.onclick = () => {
+    document.getElementById('timeDisplay').innerHTML = `Time left: ${localStorage.getItem('intervalTime')} min(s)`
     notification.close()
     runTimer()
   }
@@ -61,7 +73,7 @@ const _setupNotification = () => {
 
 const testNotification = () => {
     new Audio('assets/coins.mp3').play()
-    new Notification('Arriva!', {
+    new Notification('Arriba!', {
         body: 'Move a lil!'
     })
 }
@@ -72,6 +84,24 @@ const _showCheckmark = () => {
   setTimeout(() => {
     checkmarkEl.style.display = 'none'
   }, 1000)
+}
+
+const runTimeChecker = () => {
+  const timeBox = (time) => ({
+    map: f => timeBox(f(time)),
+    fold: f => f(time),
+  })
+  timeDisplayInterval = setInterval(() => {
+    const intervalTime = parseInt(localStorage.getItem('intervalTime'), 10)
+    const timeLeft = timeBox(new Date().getTime())
+                     .map(t => t - timestamp) // get the time lapsed
+                     .map(t => t / 60000) // convert mills to mins
+                     .map(t => intervalTime - t) // get time left till next notification
+                     .map(Math.round)
+                     .fold(t => t.toString())
+
+    document.getElementById('timeDisplay').innerHTML = `Time left: ${timeLeft} min(s)`
+  }, 60000 * 5) // check every 5 minutes
 }
 
 window.onload = function () {
