@@ -1,37 +1,106 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
-  <head>
-    <title>Stand Up Notifications</title>
-    <style type="text/css">
-      body {
-        margin: 10px;
-        white-space: nowrap;
-      }
+<head>
+  <meta charset="UTF-8">
+  <title>Arriba!</title>
+  <style>
+    body {
+      background: #bfbfde;
+    }
+    .main-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-family: Georgia;
+    }
+    .main-container button {
+      cursor: pointer;
+      height: 25px;
+      background: white;
+      border: 1px solid black;
+      border-radius: 3px;
+    }
+    .main-container .title {
+      display: flex;
+      justify-content: center;
+    }
+    .main-container .settings-container {
+      display: flex;
+      justify-content: center;
+    }
+    .main-container .settings-container .checkmark {
+      margin-left: -63px;
+      display: none;
+      position: absolute;
+      margin-top: 4px;
+    }
+    .main-container .settings-container .checkmark:after{
+      /*Add another block-level blank space*/
+      content: '';
+      display: block;
 
-      h1 {
-        font-size: 15px;
-      }
+      /*Make it a small rectangle so the border will create an L-shape*/
+      width: 6px;
+      height: 9px;
 
-      #container {
-        align-items: center;
-        display: flex;
-        justify-content: space-between;
-      }
-    </style>
-    <script src="popup.js"></script>
-  </head>
+      /*Add a white border on the bottom and left, creating that 'L' */
+      border: solid #75ff50;
+      border-width: 0 2px 2px 0;
 
-  <body>
-    <h1>Background Color Changer</h1>
-    <div id="container">
-      <span>Choose a color</span>
-      <select id="dropdown">
-        <option selected disabled hidden value=''></option>
-        <option value="white">White</option>
-        <option value="pink">Pink</option>
-        <option value="green">Green</option>
-        <option value="yellow">Yellow</option>
-      </select>
+      /*Rotate the L 45 degrees to turn it into a checkmark*/
+      transform: rotate(45deg);
+    }
+    .main-container .settings-container .interval-time {
+      width: 50px;
+      height: 20px;
+      border-radius: 3px;
+      border: 1px solid black;
+      text-align: center;
+    }
+    .main-container .settings-container button {
+      margin-left: 3px;
+    }
+    .main-container .notes-container {
+      display: flex;
+      justify-content: center;
+      font-size: 14px;
+      margin-top: 10px;
+    }
+    .main-container .test-container {
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+    }
+    .main-container .time-left-display {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+<form onsubmit="saveIntervalTime(event)">
+  <div class="main-container">
+    <div class="title">
+      <h4>Stand up notifications</h4>
     </div>
-  </body>
+    <div class="settings-container">
+      <input id="intervalTime"
+             type="number"
+             min="1"
+             class="interval-time">
+      <button>Save</button>
+      <div id="checkmark" class="checkmark"></div>
+    </div>
+    <div class="notes-container">
+      <span>- Time is in minutes -</span>
+    </div>
+    <div class="test-container">
+      <button id="testButton" type="button">Test</button>
+    </div>
+    <div class="time-left-display" id="timeDisplay">
+    </div>
+  </div>
+</form>
+</body>
+
+<script src="./popup.js" type="text/javascript"></script>
 </html>
